@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { Container, Grid, Header, List, Table } from "semantic-ui-react";
+import { MDBDataTableV5 } from 'mdbreact';
 
 function App() {
   //Get a list of current Congress members
@@ -33,31 +34,60 @@ function App() {
     }
   }
 
+  let columns = [
+    {
+      label: 'Image',
+      field: 'image',
+      sort: 'asc',
+      width: 225
+    },
+    {
+      label: 'Name',
+      field: 'name',
+      sort: 'asc',
+      width: 200
+    },
+    {
+      label: 'Title',
+      field: 'title',
+      sort: 'asc',
+      width: 200
+    },
+    {
+      label: 'State',
+      field: 'state',
+      sort: 'asc',
+      width: 200
+    },
+    {
+      label: 'Party',
+      field: 'party',
+      sort: 'asc',
+      width: 200
+    }
+  ]
+  let rows = []
+  members.forEach((member)=>{
+    rows.push(
+      {
+        image: <img src={"https://theunitedstates.io/images/congress/225x275/"+member[1].id.bioguide+".jpg"} alt={member[1].name.official_full} />,
+        name: member[1].name.official_full,
+        title: repTitle(member),
+        party: member[1].terms.[member[1].terms.length-1].party,
+        state: member[1].terms.[member[1].terms.length-1].state
+      }
+    )
+  })
+  let data = {rows: rows, columns: columns}
+
   return (
     <div className="App">
-    <Table singleLine>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Name</Table.HeaderCell>
-                <Table.HeaderCell>Image</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-
-            <Table.Body>
-              {members.map(member => {
-                return (
-                  <Table.Row key={member[0]}>
-                    <Table.Cell>{repTitle(member)} {' '}
-                    {member[1].name.official_full} (
-                    {(member[1].terms.[member[1].terms.length-1].party)[0]}-
-                    {member[1].terms.[member[1].terms.length-1].state})
-                    </Table.Cell>
-                    <Table.Cell><img src={"https://theunitedstates.io/images/congress/225x275/"+member[1].id.bioguide+".jpg"} /></Table.Cell>
-                  </Table.Row>
-                );
-              })}
-            </Table.Body>
-          </Table>
+      <MDBDataTableV5
+        striped
+        bordered
+        small
+        data={data}
+      />
     </div>
   );
 }
