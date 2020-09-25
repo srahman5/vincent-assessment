@@ -38,8 +38,8 @@ function App() {
     <Table singleLine>
             <Table.Header>
               <Table.Row>
-                <Table.HeaderCell>Image</Table.HeaderCell>
                 <Table.HeaderCell>Name</Table.HeaderCell>
+                <Table.HeaderCell>Image</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
 
@@ -47,12 +47,12 @@ function App() {
               {members.map(member => {
                 return (
                   <Table.Row key={member[0]}>
-                    <Table.Cell>{member[1].id.bioguide}</Table.Cell>
                     <Table.Cell>{repTitle(member)} {' '}
                     {member[1].name.official_full} (
                     {(member[1].terms.[member[1].terms.length-1].party)[0]}-
                     {member[1].terms.[member[1].terms.length-1].state})
                     </Table.Cell>
+                    <Table.Cell><img src={"https://theunitedstates.io/images/congress/225x275/"+member[1].id.bioguide+".jpg"} /></Table.Cell>
                   </Table.Row>
                 );
               })}
