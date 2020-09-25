@@ -1,29 +1,18 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { Container, Grid, Header, List, Table } from "semantic-ui-react";
-import { MDBDataTableV5 } from 'mdbreact';
+import { MDBDataTable } from 'mdbreact';
+import 'mdbreact/dist/css/mdb.css'
 
 function App() {
-  //Get a list of current Congress members
+  //Retrieve and parse list of current Congress members
   const URL = 'https://theunitedstates.io/congress-legislators/legislators-current.json'
   let xhr=new XMLHttpRequest();
   xhr.open("GET", URL, false);
   xhr.send();
-  let results = JSON.parse(xhr.responseText);
-  //console.log(results)
-  //console.log(Object.keys(results))
-  //console.log(Object.values(results))
-  //console.log(Object.values(Object.entries(results))) //[0]bioguide [1]official_full [2]birthday [3].length (#terms), party, type
+  let response = JSON.parse(xhr.responseText);
+  let members = Object.values(Object.entries(response))
 
-
-  //members[0][1].bio.birthday = birthday
-  //members[0][1].name.official_full
-
-  //SEN. John Smith (R-KY)
-  let members = Object.values(Object.entries(results))
-  console.log(members)
-
+  //Set title based on "type" and gender
   function repTitle(member){
     if(member[1].terms.[member[1].terms.length-1].type === "sen"){
       return "Senator "
@@ -34,6 +23,7 @@ function App() {
     }
   }
 
+  //Set up columns of Material Design table
   let columns = [
     {
       label: 'Image',
@@ -66,6 +56,8 @@ function App() {
       width: 200
     }
   ]
+
+  //Populate rows of Material Design table
   let rows = []
   members.forEach((member)=>{
     rows.push(
@@ -78,11 +70,12 @@ function App() {
       }
     )
   })
+
   let data = {rows: rows, columns: columns}
 
   return (
     <div className="App">
-      <MDBDataTableV5
+      <MDBDataTable
         striped
         bordered
         small
