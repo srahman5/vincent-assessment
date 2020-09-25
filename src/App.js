@@ -18,29 +18,46 @@ function App() {
 
   //members[0][1].bio.birthday = birthday
   //members[0][1].name.official_full
+
+  //SEN. John Smith (R-KY)
   let members = Object.values(Object.entries(results))
   console.log(members)
 
+  function repTitle(member){
+    if(member[1].terms.[member[1].terms.length-1].type === "sen"){
+      return "Senator "
+    } else if (member[1].terms.[member[1].terms.length-1].type === "rep" && member[1].bio.gender === "M"){
+      return "Congressman "
+    } else if (member[1].terms.[member[1].terms.length-1].type === "rep" && member[1].bio.gender === "F"){
+      return "Congresswoman "
+    }
+  }
+
   return (
     <div className="App">
-    <Container>
-      <Grid>
-        <Grid.Row>
-          <Grid.Column>
-            <Header>United States Congress (2020)</Header>
-            <List>
+    <Table singleLine>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>Image</Table.HeaderCell>
+                <Table.HeaderCell>Name</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+
+            <Table.Body>
               {members.map(member => {
                 return (
-                  <List.Item  key={member[0]}>
-                    <List.Content>{member[1].name.official_full}</List.Content>
-                  </List.Item>
+                  <Table.Row key={member[0]}>
+                    <Table.Cell>{member[1].id.bioguide}</Table.Cell>
+                    <Table.Cell>{repTitle(member)} {' '}
+                    {member[1].name.official_full} (
+                    {(member[1].terms.[member[1].terms.length-1].party)[0]}-
+                    {member[1].terms.[member[1].terms.length-1].state})
+                    </Table.Cell>
+                  </Table.Row>
                 );
               })}
-            </List>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </Container>
+            </Table.Body>
+          </Table>
     </div>
   );
 }
